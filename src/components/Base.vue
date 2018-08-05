@@ -55,7 +55,7 @@
       </div>
       <div class="container-height flex-vertical-center float-menu">
         <div style="float:right" v-if="not_login">
-          <router-link to="/login" >登录</router-link>
+          <router-link to="/login">登录</router-link>
           <router-link style="margin-left: 40px;" to="/register">注册</router-link>
         </div>
         <div v-else style="float:right">

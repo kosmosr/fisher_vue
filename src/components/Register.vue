@@ -14,16 +14,16 @@
                 <input style="width:100%" id="nickname" name="nickname"
                        type="text"
                        placeholder="昵称"
-                       class="none-input">
+                       class="none-input" v-model="nickname">
                 <input style="width:100%" id="email" name="email" type="text"
                        placeholder="邮箱"
-                       class="none-input">
+                       class="none-input" v-model="email">
                 <input id="password" style="width:100%"
                        name="password"
                        placeholder="密码"
-                       class="none-input" type="password">
+                       class="none-input" type="password" v-model="password">
                 <input style="margin-top:15px;" id="btn-submit" type="submit"
-                       class="btn btn-big btn-block" value="注册">
+                       class="btn btn-big btn-block" value="注册" v-on:click="register">
               </div>
             </div>
           </div>
@@ -42,8 +42,32 @@
 <script>
 export default {
   name: 'Register',
+  data () {
+    return {
+      nickname: '',
+      email: '',
+      password: ''
+    }
+  },
+
   created () {
     this.$parent.nav_show = false
+  },
+  methods: {
+    register () {
+      let url = this.GLOBAL.apiUrl
+      let nickname = this.nickname
+      let email = this.email
+      let password = this.password
+      let data = JSON.stringify({'nickname': nickname, 'email': email, 'password': password})
+      this.$http.post(url + 'users', data).then(function (response) {
+        if (response.status === 201) {
+          this.$router.push({path: '/login'})
+        } else {
+          console.log(response)
+        }
+      })
+    }
   }
 }
 </script>
