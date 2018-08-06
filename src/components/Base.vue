@@ -8,7 +8,7 @@
               <div class="col-md-2">
                 <img src="../../static/images/logo-yushu.png"/>
               </div>
-              <div style="margin-left:30px;" class="col-md-8 input-group">
+              <div style="margin-left:20px;" class="col-md-7 col-xs-6 input-group">
                 <input name="keyword" type="text" placeholder="ISBN、图书名称"
                        class="form-control input-sm">
                 <span class="input-group-btn">
@@ -20,30 +20,30 @@
         </div>
       </div>
       <div class="sub-nav flex-vertical-center">
-        <div class="container">
+        <div class="container" style="width: 100%">
           <div class="row">
-            <div class="col-md-2 col-md-offset-1">
+            <div class="col-md-2 col-xs-4 col-md-offset-2">
               <router-link id="recent" to="/"
                            class="flex-vertical-hor-center">
                 <img src="../../static/images/upload.png"/>
                 <span>最近上传</span>
               </router-link>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-xs-4 ">
               <a id="gifts" href="#"
                  class="flex-vertical-hor-center">
                 <img src="../../static/images/gift.png"/>
                 <span>赠送清单</span>
               </a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-xs-4">
               <a id="wishes" href="#"
                  class="flex-vertical-hor-center">
                 <img src="../../static/images/wish.png"/>
                 <span>心愿清单</span>
               </a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 ">
               <a id="pending" href="#"
                  class="flex-vertical-hor-center">
                 <img src="../../static/images/fish.png"/>
@@ -60,7 +60,7 @@
         </div>
         <div v-else style="float:right">
           <a href="#">{{nickname}}的鱼书</a>
-          <a style="margin-left: 40px;" href="#">注销</a>
+          <a style="margin-left: 40px;" href="#" v-on:click="logout">注销</a>
         </div>
       </div>
     </div>
@@ -86,16 +86,18 @@ export default {
     }
   },
   methods: {
-    get_login_info: function () {
-      let nickname = localStorage.getItem('nickname')
-      if (nickname) {
-        this.not_login = false
-        this.nickname = nickname
-      }
+    logout () {
+      let url = this.GLOBAL.apiUrl + 'users'
+      this.$http.delete(url).then(function (response) {
+        if (response.status === 204) {
+          localStorage.removeItem('token')
+          this.$router.go(0)
+        }
+      })
     }
   },
   created () {
-    this.get_login_info()
+    this.nav_show = true
   }
 }
 </script>

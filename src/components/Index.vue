@@ -31,8 +31,18 @@ export default {
     }
   },
   created: function () {
-    this.$http.get('http://localhost:9527/').then(function (response) {
-      this.recent = response.body
+    let url = this.GLOBAL.apiUrl
+    this.$http.get(url).then(function (response) {
+      response.data.forEach(item => {
+        if (item.nickname) {
+          console.log(item.nickname)
+          this.$parent.not_login = false
+          this.$parent.nickname = item.nickname
+        }
+        if (item.recent) {
+          this.recent = item.recent
+        }
+      })
     })
   }
 }

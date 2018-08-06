@@ -1,5 +1,5 @@
 {
-  "asi"      : false,
+  "asi"      : true,
   "boss"     : true,
   "browser"  : true,
   "curly"    : true,
@@ -10,5 +10,6 @@
   "expr"     : true,
   "laxbreak" : true,
   "quotmark" : "single",
-  "validthis": true
+  "validthis": true,
+  "esversion": 6
 }
