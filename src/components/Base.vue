@@ -10,9 +10,9 @@
               </div>
               <div style="margin-left:20px;" class="col-md-7 col-xs-6 input-group">
                 <input name="keyword" type="text" placeholder="ISBN、图书名称"
-                       class="form-control input-sm">
+                       class="form-control input-sm" v-model="keyword">
                 <span class="input-group-btn">
-                            <input class="btn btn-search" type="submit" value="搜索"/>
+                            <input class="btn btn-search" type="submit" v-on:click="submit" value="搜索"/>
                         </span>
               </div>
             </div>
@@ -82,7 +82,8 @@ export default {
     return {
       nav_show: true,
       not_login: true,
-      nickname: null
+      nickname: null,
+      keyword: null
     }
   },
   methods: {
@@ -94,6 +95,11 @@ export default {
           this.$router.go(0)
         }
       })
+    },
+    submit () {
+      // let keyword = this.keyword
+      const keyword = 123
+      this.$router.push({name: 'book', params: {keyword}})
     }
   },
   created () {
