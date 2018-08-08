@@ -29,8 +29,10 @@
           </div>
           <div style="margin-top:30px;" class="row">
             <div class="col-md-8 text-center col-md-offset-2">
-              <span class="description-font">已有账号？</span><router-link
-              to="/login">登录</router-link>
+              <span class="description-font">已有账号？</span>
+              <router-link
+                to="/login">登录
+              </router-link>
             </div>
           </div>
         </div>
@@ -40,36 +42,36 @@
 </template>
 
 <script>
-export default {
-  name: 'Register',
-  data () {
-    return {
-      nickname: '',
-      email: '',
-      password: ''
-    }
-  },
+  export default {
+    name: 'Register',
+    data () {
+      return {
+        nickname: '',
+        email: '',
+        password: ''
+      }
+    },
 
-  created () {
-    this.$parent.nav_show = false
-  },
-  methods: {
-    register () {
-      let url = this.GLOBAL.apiUrl
-      let nickname = this.nickname
-      let email = this.email
-      let password = this.password
-      let data = JSON.stringify({'nickname': nickname, 'email': email, 'password': password})
-      this.$http.post(url + 'users', data).then(function (response) {
-        if (response.status === 201) {
-          this.$router.push({path: '/login'})
-        } else {
-          console.log(response)
-        }
-      })
+    created () {
+      this.$parent.nav_show = false
+    },
+    methods: {
+      register () {
+        let url = this.GLOBAL.apiUrl
+        let nickname = this.nickname
+        let email = this.email
+        let password = this.password
+        let data = JSON.stringify({'nickname': nickname, 'email': email, 'password': password})
+        this.$http.post(url + 'users', data).then(function (response) {
+          if (response.status === 201) {
+            this.$router.push({path: '/login'})
+          } else {
+            console.log(response)
+          }
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>

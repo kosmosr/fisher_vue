@@ -36,8 +36,10 @@
           </div>
           <div style="margin-top:30px;" class="row">
             <div class="col-md-8 text-center col-md-offset-2">
-              <span class="description-font">没有账号？</span><router-link
-              to="/register">注册</router-link>
+              <span class="description-font">没有账号？</span>
+              <router-link
+                to="/register">注册
+              </router-link>
             </div>
           </div>
         </div>
@@ -47,37 +49,37 @@
 </template>
 
 <script>
-export default {
-  name: 'Login',
-  data () {
-    return {
-      email: '',
-      password: ''
-    }
-  },
-  created () {
-    this.$parent.nav_show = false
-  },
-  methods: {
-    Login () {
-      let url = this.GLOBAL.apiUrl + 'auth'
-      let email = this.email
-      let password = this.password
-      let data = JSON.stringify({'email': email, 'password': password})
-      this.$http.post(url, data).then(function (response) {
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token)
-          this.$router.replace({path: '/'})
-          this.$router.go(0)
-        } else {
-          console.log(response)
-        }
-      })
+  export default {
+    name: 'Login',
+    data () {
+      return {
+        email: '',
+        password: ''
+      }
+    },
+    created () {
+      this.$parent.nav_show = false
+    },
+    methods: {
+      Login () {
+        let url = this.GLOBAL.apiUrl + 'auth'
+        let email = this.email
+        let password = this.password
+        let data = JSON.stringify({'email': email, 'password': password})
+        this.$http.post(url, data).then(function (response) {
+          if (response.status === 200) {
+            localStorage.setItem('token', response.data.token)
+            this.$router.replace({path: '/'})
+            this.$router.go(0)
+          } else {
+            console.log(response)
+          }
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
-@import "../../static/css/login.css";
+  @import "../../static/css/login.css";
 </style>

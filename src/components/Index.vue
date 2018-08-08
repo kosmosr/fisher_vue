@@ -23,29 +23,29 @@
 </template>
 
 <script>
-export default {
-  name: 'Index',
-  data () {
-    return {
-      recent: []
-    }
-  },
-  created: function () {
-    let url = this.GLOBAL.apiUrl
-    this.$http.get(url).then(function (response) {
-      response.data.forEach(item => {
-        if (item.nickname) {
-          console.log(item.nickname)
-          this.$parent.not_login = false
-          this.$parent.nickname = item.nickname
-        }
-        if (item.recent) {
-          this.recent = item.recent
-        }
+  export default {
+    name: 'Index',
+    data () {
+      return {
+        recent: []
+      }
+    },
+    created: function () {
+      let url = this.GLOBAL.apiUrl
+      this.$http.get(url).then(function (response) {
+        response.data.forEach(item => {
+          if (item.nickname) {
+            console.log(item.nickname)
+            this.$parent.not_login = false
+            this.$parent.nickname = item.nickname
+          }
+          if (item.recent) {
+            this.recent = item.recent
+          }
+        })
       })
-    })
+    }
   }
-}
 </script>
 
 <style scoped>

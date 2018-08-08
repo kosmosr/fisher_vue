@@ -12,7 +12,8 @@
                 <input name="keyword" type="text" placeholder="ISBN、图书名称"
                        class="form-control input-sm" v-model="keyword">
                 <span class="input-group-btn">
-                            <input class="btn btn-search" type="submit" v-on:click="submit" value="搜索"/>
+                            <router-link class="btn btn-search" type="submit"
+                                         :to="{ name: 'book', params: { keyword: keyword}}">搜索</router-link>
                         </span>
               </div>
             </div>
@@ -76,36 +77,31 @@
 </template>
 
 <script>
-export default {
-  name: 'Base',
-  data () {
-    return {
-      nav_show: true,
-      not_login: true,
-      nickname: null,
-      keyword: null
-    }
-  },
-  methods: {
-    logout () {
-      let url = this.GLOBAL.apiUrl + 'users'
-      this.$http.delete(url).then(function (response) {
-        if (response.status === 204) {
-          localStorage.removeItem('token')
-          this.$router.go(0)
-        }
-      })
+  export default {
+    name: 'Base',
+    data () {
+      return {
+        nav_show: true,
+        not_login: true,
+        nickname: null,
+        keyword: null
+      }
     },
-    submit () {
-      // let keyword = this.keyword
-      const keyword = 123
-      this.$router.push({name: 'book', params: {keyword}})
+    methods: {
+      logout () {
+        let url = this.GLOBAL.apiUrl + 'users'
+        this.$http.delete(url).then(function (response) {
+          if (response.status === 204) {
+            localStorage.removeItem('token')
+            this.$router.go(0)
+          }
+        })
+      }
+    },
+    created () {
+      this.nav_show = true
     }
-  },
-  created () {
-    this.nav_show = true
   }
-}
 </script>
 
 <style scoped>
