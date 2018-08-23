@@ -6,6 +6,7 @@ import Login from '../components/Login'
 import Index from '../components/Index'
 import Register from '../components/Register'
 import Search from '../components/Search'
+import BookDetail from '../components/BookDetail'
 
 Vue.use(Router)
 
@@ -29,9 +30,14 @@ export default new Router({
           component: Index
         },
         {
-          path: '/books/:keyword',
+          path: '/books/:key',
           name: 'book',
           component: Search
+        },
+        {
+          path: '/book/:isbn',
+          name: 'book_detail',
+          component: BookDetail
         }
       ]
     },

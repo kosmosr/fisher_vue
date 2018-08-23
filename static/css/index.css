@@ -4,6 +4,9 @@
 #books {
   padding: 0 !important;
 }
+#books .link {
+  display: flex;
+}
 #books > div:nth-of-type(2n) {
   margin-left: 100px;
 }
