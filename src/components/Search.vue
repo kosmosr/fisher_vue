@@ -1,5 +1,5 @@
 <template>
-  <div id='app' v-loading.fullscreen.lock="fullscreenLoading">
+  <div id='app' v-loading="fullscreenLoading">
     <div style="margin-top:20px;" class="row flex-vertical-center">
       <div class="col-md-6">
             <span class="sub-title">搜索 <span class="space highlight"
@@ -12,7 +12,7 @@
     </div>
     <hr>
     <div class="row col-padding" v-for="book in books" :key="book.isbn">
-      <a class="" href="#" v-on:click="detail(book.isbn)">
+      <router-link class="" href="" :to="{name: 'book_detail', params: {isbn: book.isbn}}">
         <div class="col-md-2">
           <img class="book-img-small shadow" v-bind:src="book.image">
         </div>
@@ -21,7 +21,7 @@
           <span>{{book.author}} / {{book.publisher}} / ￥{{book.price}}</span>
           <span class="summary">{{ book.summary}}</span>
         </div>
-      </a>
+      </router-link>
     </div>
     <div class="row">
       <div class="flex-hor-center ">
@@ -74,9 +74,6 @@
             this.fullscreenLoading = false
           }
         })
-      },
-      detail (isbn) {
-        this.$router.push({name: 'book_detail', params: {isbn: isbn}})
       },
       handleSizeChange (val) {
         this.per_page = val

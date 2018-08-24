@@ -57,18 +57,23 @@
     },
     methods: {
       register () {
-        let url = this.GLOBAL.apiUrl
+        let url = this.GLOBAL.apiUrl + 'users'
         let nickname = this.nickname
         let email = this.email
         let password = this.password
         let data = JSON.stringify({'nickname': nickname, 'email': email, 'password': password})
-        this.$http.post(url + 'users', data).then(function (response) {
+        this.$http.post(url, data).then(function (response) {
           if (response.status === 201) {
             this.$router.push({path: '/login'})
           } else {
-            console.log(response)
+            let errorMsg = response.data.message
+            this.$message.error(errorMsg)
           }
         })
+          .catch(function (response) {
+            let errorMsg = response.data.message
+            this.$message.error(errorMsg)
+          })
       }
     }
   }

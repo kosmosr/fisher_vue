@@ -6,7 +6,7 @@
     </div>
     <div id="books" class="row">
       <div class="col-md-4 book-container" v-for="book in recent" :key="book.isbn">
-        <a href="#" class="">
+        <router-link href="" class="" :to="{name: 'book_detail', params: {isbn: book.isbn}}">
           <div class="col-md-4 no-padding">
             <img class="book-img cssshadow" v-bind:src="book.image">
           </div>
@@ -16,7 +16,7 @@
             </div>
             <span class="summary description-font">{{ book.summary }}</span>
           </div>
-        </a>
+        </router-link>
       </div>
     </div>
   </div>
@@ -33,16 +33,7 @@
     created: function () {
       let url = this.GLOBAL.apiUrl
       this.$http.get(url).then(function (response) {
-        response.data.forEach(item => {
-          if (item.nickname) {
-            console.log(item.nickname)
-            this.$parent.not_login = false
-            this.$parent.nickname = item.nickname
-          }
-          if (item.recent) {
-            this.recent = item.recent
-          }
-        })
+        this.recent = response.data
       })
     }
   }

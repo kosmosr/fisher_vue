@@ -48,7 +48,7 @@
       <div v-if="data.has_in_gifts !== true && data.has_in_wishes !== true">
         <div class="col-md-1">
           <a class="btn btn-outline"
-             href="#modal">
+             href="#" v-on:click="gift">
             赠送此书
           </a>
         </div>
@@ -110,22 +110,6 @@
           </div>
         </div>
       </div>
-      <div class="remodal" data-remodal-id="modal" role="dialog"
-           aria-labelledby="modal1Title" aria-describedby="modal1Desc"
-           data-remodal-options="closeOnOutsideClick: false">
-        <button data-remodal-action="close" class="remodal-close"
-                aria-label="Close"></button>
-        <div>
-          <h5 class="diag-title">
-            您确定拥有《{{ data.title }}》这本书吗？</h5>
-          <p id="modal1Desc" class="description-font">
-            如果您不想赠送此书，或者没有这本书，请不要随意发布虚假信息。谢谢你的支持和理解。
-          </p>
-        </div>
-        <br>
-        <button data-remodal-action="confirm" class="remodal-confirm">确定赠送</button>
-        <button data-remodal-action="cancel" class="remodal-cancel">不，算了</button>
-      </div>
     </div>
   </div>
 </template>
@@ -147,6 +131,33 @@
             this.data = resp
           }
         })
+      },
+      gift () {
+        this.$confirm('如果您不想赠送此书，或者没有这本书，请不要随意发布虚假信息。谢谢你的支持和理解。'
+                      , '您确定拥有《' + this.data.title + '》这本书吗', {
+                        confirmButtonText: '确定赠送',
+                        cancelButtonText: '不，算了',
+                        center: true,
+                        showClose: true,
+                        closeOnClickModal: false
+        }).then(() => {
+          this.save_gift()
+        })
+      },
+      save_gift () {
+        let url = this.GLOBAL.apiUrl + 'gifts/' + this.$route.params.isbn
+        this.$http.get(url).then(function (response) {
+          if (response.status === 200) {
+            this.$message({
+              type: 'success',
+              message: '赠送成功!'
+            })
+          }
+        })
+          .catch(function (response) {
+            let errorMsg = response.data.message
+            this.$message.error(errorMsg)
+          })
       }
     },
     created () {

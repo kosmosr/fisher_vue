@@ -66,15 +66,20 @@
         let email = this.email
         let password = this.password
         let data = JSON.stringify({'email': email, 'password': password})
-        this.$http.post(url, data).then(function (response) {
-          if (response.status === 200) {
-            localStorage.setItem('token', response.data.token)
-            this.$router.replace({path: '/'})
-            this.$router.go(0)
-          } else {
-            console.log(response)
-          }
-        })
+        this.$http.post(url, data)
+          .then(function (response) {
+            if (response.status === 200) {
+              localStorage.setItem('token', response.data.token)
+              this.$parent.nav_show = true
+              this.$parent.not_login = false
+              this.$parent.nickname = response.data.nickname
+              this.$router.push({path: '/'})
+            }
+          })
+          .catch(function (response) {
+            let errorMsg = response.data.message
+            this.$message.error(errorMsg)
+          })
       }
     }
   }
