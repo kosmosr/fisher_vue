@@ -7,6 +7,10 @@ import Index from '../components/Index'
 import Register from '../components/Register'
 import Search from '../components/Search'
 import BookDetail from '../components/BookDetail'
+import ResetPassword from '../components/ResetPassword'
+import ForgetPassword from '../components/ForgetPassword'
+import Personal from '../components/Personal'
+import ChangePassword from '../components/ChangePassword'
 
 Vue.use(Router)
 
@@ -38,6 +42,22 @@ export default new Router({
           path: '/book/:isbn',
           name: 'book_detail',
           component: BookDetail
+        },
+        {
+          path: '/reset/password',
+          component: ResetPassword
+        },
+        {
+          path: '/forget/password/:token',
+          component: ForgetPassword
+        },
+        {
+          path: '/personal',
+          component: Personal
+        },
+        {
+          path: '/change/password',
+          component: ChangePassword
         }
       ]
     },

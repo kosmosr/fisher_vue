@@ -25,9 +25,8 @@
                          name="password"
                          placeholder="密码"
                          class="none-input" type="password" v-model="password">
-                  <a id="forget-password" class="description-font"
-                     href="#">
-                    忘记密码?</a>
+                  <router-link id="forget-password" class="description-font" to="/reset/password">
+                    忘记密码?</router-link>
                 </div>
                 <input style="margin-top:15px;" id="btn-submit" type="submit"
                        class="btn btn-big btn-block" value="登录" v-on:click="Login">
@@ -49,6 +48,7 @@
 </template>
 
 <script>
+  let Base64 = require('js-base64').Base64
   export default {
     name: 'Login',
     data () {
@@ -69,10 +69,12 @@
         this.$http.post(url, data)
           .then(function (response) {
             if (response.status === 200) {
+              let nickname = Base64.encode(response.data.nickname)
               localStorage.setItem('token', response.data.token)
               this.$parent.nav_show = true
               this.$parent.not_login = false
-              this.$parent.nickname = response.data.nickname
+              this.$parent.nickname = Base64.decode(nickname)
+              localStorage.setItem('nickname', nickname)
               this.$router.push({path: '/'})
             }
           })

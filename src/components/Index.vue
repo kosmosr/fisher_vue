@@ -35,6 +35,10 @@
       this.$http.get(url).then(function (response) {
         this.recent = response.data
       })
+        .catch((response) => {
+          console.log(response.data)
+          this.$message.error('连接服务器失败')
+        })
     }
   }
 </script>

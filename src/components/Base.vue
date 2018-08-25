@@ -24,7 +24,7 @@
                   </div>
                 </div>
                 <div v-else class="container-height flex-vertical-center login-box">
-                  <a href="#">{{nickname}}的鱼书</a>
+                  <router-link to="/personal">{{nickname}}的鱼书</router-link>
                   <a class="btn-end" href="#" v-on:click="logout">注销</a>
                 </div>
               </div>
@@ -78,6 +78,7 @@
 </template>
 
 <script>
+  let Base64 = require('js-base64').Base64
   export default {
     name: 'Base',
     data () {
@@ -94,9 +95,21 @@
         this.$http.delete(url).then(function (response) {
           if (response.status === 204) {
             localStorage.removeItem('token')
+            localStorage.removeItem('nickname')
             this.$router.go(0)
           }
         })
+          .catch(function (response) {
+            let errorMsg = response.data.message
+            this.$message.error(errorMsg)
+          })
+      },
+      getNickname () {
+        let nickname = localStorage.getItem('nickname')
+        if (nickname) {
+          this.nickname = Base64.decode(nickname)
+          this.not_login = false
+        }
       },
       search () {
         const key = this.keyword
@@ -105,6 +118,7 @@
     },
     created () {
       this.nav_show = true
+      this.getNickname()
     }
   }
 </script>
