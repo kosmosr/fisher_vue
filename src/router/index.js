@@ -11,6 +11,10 @@ import ResetPassword from '../components/ResetPassword'
 import ForgetPassword from '../components/ForgetPassword'
 import Personal from '../components/Personal'
 import ChangePassword from '../components/ChangePassword'
+import Gifts from '../components/Gifts'
+import Wishes from '../components/Wishes'
+import Drift from '../components/Drift'
+import Pending from '../components/Pending'
 
 Vue.use(Router)
 
@@ -58,6 +62,22 @@ export default new Router({
         {
           path: '/change/password',
           component: ChangePassword
+        },
+        {
+          path: '/gifts',
+          component: Gifts
+        },
+        {
+          path: '/wishes',
+          component: Wishes
+        },
+        {
+          path: '/drift/:id',
+          component: Drift
+        },
+        {
+          path: '/pending',
+          component: Pending
         }
       ]
     },

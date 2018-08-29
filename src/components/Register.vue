@@ -63,16 +63,10 @@
         let password = this.password
         let data = JSON.stringify({'nickname': nickname, 'email': email, 'password': password})
         this.$http.post(url, data).then(function (response) {
-          if (response.status === 201) {
-            this.$router.push({path: '/login'})
-          } else {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
-          }
+          this.$router.push({path: '/login'})
         })
           .catch(function (response) {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
+            this.printErrorMsg(response)
           })
       }
     }

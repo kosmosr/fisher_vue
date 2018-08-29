@@ -23,6 +23,60 @@ Vue.http.interceptors.push((request, next) => {
   })
 })
 
+Vue.prototype.checkLogin = function checkLogin () {
+  let url = this.GLOBAL.apiUrl + 'user'
+  let token = localStorage.getItem('token')
+  if (token) {
+    this.$http.get(url)
+      .catch((response) => {
+        this.printErrorMsg(response)
+        localStorage.removeItem('token')
+        localStorage.removeItem('nickname')
+        this.$router.go(0)
+      })
+  }
+}
+
+Vue.prototype.checkToken = function checkToken (global) {
+  let url = this.GLOBAL.apiUrl + 'user'
+  let token = localStorage.getItem('token')
+  if (token) {
+    this.$http.get(url)
+      .catch((response) => {
+        this.printErrorMsg(response)
+        localStorage.removeItem('token')
+        localStorage.removeItem('nickname')
+        this.$router.push({path: '/'})
+        global.$parent.nav_show = true
+        global.$parent.not_login = true
+        return false
+      })
+    return true
+  } else {
+    this.$message.error('请登录后操作')
+    this.$router.push({path: '/'})
+    global.$parent.nav_show = true
+    global.$parent.not_login = true
+    return false
+  }
+}
+
+Vue.prototype.printErrorMsg = function printErrorMsg (response) {
+  const gettype = Object.prototype.toString
+  let errorMsg = response.data.message
+  let type = gettype.call(errorMsg)
+  if (type === '[object Array]') {
+    for (let i = 0; i < errorMsg.length; i++) {
+      this.$notify.error({
+        title: '错误',
+        message: errorMsg[i]
+      })
+    }
+  } else {
+    this.$message.error(errorMsg)
+  }
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

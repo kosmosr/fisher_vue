@@ -6,7 +6,7 @@
     </div>
     <div id="books" class="row">
       <div class="col-md-4 book-container" v-for="book in recent" :key="book.isbn">
-        <router-link href="" class="" :to="{name: 'book_detail', params: {isbn: book.isbn}}">
+        <router-link :to="{name: 'book_detail', params: {isbn: book.isbn}}">
           <div class="col-md-4 no-padding">
             <img class="book-img cssshadow" v-bind:src="book.image">
           </div>
@@ -31,12 +31,12 @@
       }
     },
     created: function () {
+      this.checkLogin()
       let url = this.GLOBAL.apiUrl
       this.$http.get(url).then(function (response) {
         this.recent = response.data
       })
-        .catch((response) => {
-          console.log(response.data)
+        .catch(() => {
           this.$message.error('连接服务器失败')
         })
     }

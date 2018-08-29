@@ -42,25 +42,25 @@
               </router-link>
             </div>
             <div class="col-md-2 col-xs-3 ">
-              <a id="gifts" href="#"
+              <router-link id="gifts" to="/gifts"
                  class="flex-vertical-hor-center">
                 <img src="/static/images/gift.png"/>
                 <span>赠送清单</span>
-              </a>
+              </router-link>
             </div>
             <div class="col-md-2 col-xs-3">
-              <a id="wishes" href="#"
+              <router-link id="wishes" to="/wishes"
                  class="flex-vertical-hor-center">
                 <img src="/static/images/wish.png"/>
                 <span>心愿清单</span>
-              </a>
+              </router-link>
             </div>
             <div class="col-md-2 col-xs-3">
-              <a id="pending" href="#"
+              <router-link id="pending" to="/pending"
                  class="flex-vertical-hor-center">
                 <img src="/static/images/fish.png"/>
                 <span>鱼漂</span>
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
@@ -100,8 +100,10 @@
           }
         })
           .catch(function (response) {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
+            this.$message.error(response.data.message)
+            this.not_login = true
+            localStorage.removeItem('token')
+            localStorage.removeItem('nickname')
           })
       },
       getNickname () {

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-loading="fullscreenLoading">
     <div class="row">
       <div style="margin-top:150px;" class="col-md-6 col-md-offset-3">
         <div class="row">
@@ -37,26 +37,30 @@
         nickname: '',
         send_receive: '0/0',
         beans: 0,
-        email: ''
+        email: '',
+        fullscreenLoading: true
       }
     },
     methods: {
       getPersonal () {
-        let url = this.GLOBAL.apiUrl + 'user'
-        this.$http.get(url)
-          .then((response) => {
-            if (response.status === 200) {
-              let data = response.data
-              this.nickname = data.nickname
-              this.send_receive = data.send_receive
-              this.beans = data.beans
-              this.email = data.email
-            }
-          })
-          .catch(function (response) {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
-          })
+        if (this.checkToken(this)) {
+          let url = this.GLOBAL.apiUrl + 'user'
+          this.$http.get(url)
+            .then((response) => {
+              if (response.status === 200) {
+                let data = response.data
+                this.nickname = data.nickname
+                this.send_receive = data.send_receive
+                this.beans = data.beans
+                this.email = data.email
+                this.fullscreenLoading = false
+              }
+            })
+            .catch(function (response) {
+              let errorMsg = response.data.message
+              this.$message.error(errorMsg)
+            })
+        }
       },
       back () {
         this.$parent.nav_show = true

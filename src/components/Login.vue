@@ -71,16 +71,15 @@
             if (response.status === 200) {
               let nickname = Base64.encode(response.data.nickname)
               localStorage.setItem('token', response.data.token)
-              this.$parent.nav_show = true
-              this.$parent.not_login = false
               this.$parent.nickname = Base64.decode(nickname)
               localStorage.setItem('nickname', nickname)
+              this.$parent.nav_show = true
+              this.$parent.not_login = false
               this.$router.push({path: '/'})
             }
           })
           .catch(function (response) {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
+            this.printErrorMsg(response)
           })
       }
     }

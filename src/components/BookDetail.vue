@@ -82,26 +82,25 @@
           上传于{{ gift.time }}
         </div>
         <div class="col-md-2">
-          <a class="btn-normal"
-             href="#">向他请求此书</a>
+          <router-link class="btn-normal" :to="{path:`/drift/${gift.id}`}">向他请求此书</router-link>
         </div>
       </div>
-      <div v-if="data.wishes.total !== 0 && data.has_in_gifts === true">
-        <div style="margin-top:30px;" class="row">
-          <div class="col-md-3"><span class="description-title">向他们赠送此书</span></div>
+    </div>
+    <div v-if="data.wishes.total !== 0 && data.has_in_gifts">
+      <div style="margin-top:30px;" class="row">
+        <div class="col-md-3"><span class="description-title">向他们赠送此书</span></div>
+      </div>
+      <hr style="margin-top:5px;"/>
+      <div style="margin-top:30px;" class="row" v-for="wish in data.wishes.trades" :key="wish.id">
+        <div class="col-md-1">
+          {{ wish.user_name }}
         </div>
-        <hr style="margin-top:5px;"/>
-        <div style="margin-top:30px;" class="row" v-for="wish in data.wishes.trades" :key="wish.id">
-          <div class="col-md-1">
-            {{ wish.user_name }}
-          </div>
-          <div class="col-md-2 description-font">
-            上传于{{ wish.time }}
-          </div>
-          <div class="col-md-2">
-            <a class="btn-normal"
-               href="#">向他赠送此书</a>
-          </div>
+        <div class="col-md-2 description-font">
+          上传于{{ wish.time }}
+        </div>
+        <div class="col-md-2">
+          <a class="btn-normal"
+             href="#" v-on:click="satisfyWish(wish.id)">向他赠送此书</a>
         </div>
       </div>
     </div>
@@ -121,18 +120,9 @@
         let url = this.GLOBAL.apiUrl + 'book/' + this.$route.params.isbn
         this.$http.get(url).then(function (response) {
           if (response.status === 200) {
-            let resp = response.data
-            this.data = resp
+            this.data = response.data
           }
         })
-          .catch(function (response) {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
-            localStorage.removeItem('token')
-            localStorage.removeItem('nickname')
-            this.$parent.not_login = true
-            this.$router.push({path: '/'})
-          })
       },
       gift () {
         this.$confirm('如果您不想赠送此书，或者没有这本书，请不要随意发布虚假信息。谢谢你的支持和理解。'
@@ -147,44 +137,54 @@
         })
       },
       save_gift () {
-        let url = this.GLOBAL.apiUrl + 'gifts/' + this.$route.params.isbn
-        this.$http.get(url).then(function (response) {
-          if (response.status === 200) {
-            this.$message({
-              type: 'success',
-              message: '赠送成功!'
-            })
-            this.$router.go(0)
-          }
-        })
-          .catch(function (response) {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
-            localStorage.removeItem('token')
-            localStorage.removeItem('nickname')
-            this.$parent.not_login = true
-            this.$router.push({path: '/'})
+        if (this.checkToken(this)) {
+          let url = this.GLOBAL.apiUrl + 'gifts/' + this.$route.params.isbn
+          this.$http.get(url).then(function (response) {
+            if (response.status === 200) {
+              this.$message({
+                type: 'success',
+                message: '赠送成功!'
+              })
+              this.$router.go(0)
+            }
           })
+            .catch(function (response) {
+              this.$message.error(response.data.message)
+            })
+        }
       },
       save_wish () {
-        let url = this.GLOBAL.apiUrl + 'wish/' + this.$route.params.isbn
-        this.$http.get(url).then(function (response) {
-          if (response.status === 200) {
-            this.$message({
-              type: 'success',
-              message: '加入到心愿清单成功!'
-            })
-            this.$router.go(0)
-          }
-        })
-          .catch(function (response) {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
-            localStorage.removeItem('token')
-            localStorage.removeItem('nickname')
-            this.$parent.not_login = true
-            this.$router.push({path: '/'})
+        if (this.checkToken(this)) {
+          let url = this.GLOBAL.apiUrl + 'wishes/' + this.$route.params.isbn
+          this.$http.get(url).then(function (response) {
+            if (response.status === 200) {
+              this.$message({
+                type: 'success',
+                message: '加入到心愿清单成功!'
+              })
+              this.$router.go(0)
+            }
           })
+            .catch(function (response) {
+              this.$message.error(response.data.message)
+            })
+        }
+      },
+      satisfyWish (wid) {
+        if (this.checkToken(this)) {
+          let url = this.GLOBAL.apiUrl + 'wish/' + wid
+          this.$http.get(url).then(function (response) {
+            if (response.status === 200) {
+              this.$message({
+                type: 'success',
+                message: response.data
+              })
+            }
+          })
+            .catch(function (response) {
+              this.$message.error(response.data.message)
+            })
+        }
       }
     },
     created () {

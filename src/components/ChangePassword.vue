@@ -44,29 +44,31 @@
     },
     methods: {
       changePassword () {
-        let url = this.GLOBAL.apiUrl + 'change/password'
-        let oldPassword = this.old_password
-        let newPassword = this.new_password
-        let confirmPassword = this.confirm_password
-        let data = JSON.stringify({
-          'old_password': oldPassword,
-          'new_password': newPassword,
-          'confirm_password': confirmPassword
-        })
-        this.$http.patch(url, data)
-          .then((response) => {
-            if (response.status === 204) {
-              this.$message({
-                type: 'success',
-                message: '重置密码成功'
-              })
-              this.$parent.nav_show = true
-              this.$router.push({path: '/'})
-            }
-          }).catch((response) => {
-            let errorMsg = response.data.message
-            this.$message.error(errorMsg)
+        if (this.checkToken(this)) {
+          let url = this.GLOBAL.apiUrl + 'change/password'
+          let oldPassword = this.old_password
+          let newPassword = this.new_password
+          let confirmPassword = this.confirm_password
+          let data = JSON.stringify({
+            'old_password': oldPassword,
+            'new_password': newPassword,
+            'confirm_password': confirmPassword
           })
+          this.$http.patch(url, data)
+            .then((response) => {
+              if (response.status === 204) {
+                this.$message({
+                  type: 'success',
+                  message: '重置密码成功'
+                })
+                this.$parent.nav_show = true
+                this.$router.push({path: '/'})
+              }
+            }).catch((response) => {
+              let errorMsg = response.data.message
+              this.$message.error(errorMsg)
+            })
+        }
       },
       created () {
         this.$parent.nav_show = false
